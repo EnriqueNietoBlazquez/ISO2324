@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#Fecha: 17-01-2024
+#Fecha: Curso 2023/2024
 #Nombre: Enrique Nieto Blázquez
 #Función: Enunciado en: https://drive.google.com/file/d/179Ir-IOxGZjIxQ-GsFR-wzmeRaWRCLE1/view?usp=sharing
 
@@ -9,13 +9,15 @@
 #Meter el fichero en una variable no es necesario pero lo hago porque se recomienda meterlo todo en variables
 fichero="agenda.txt"
 
+clear
+
 
 
 while true ; do
 
 	echo "Bienvenido a esta agenda de contactos"
 	echo "Necesito que elijas una opcion (solamente con el número):"
-	
+
 	echo "1 - Añadir una entrada"
 	echo "2 - Buscar por DNI"
 	echo "3 - Ver la agenda completa"
@@ -23,12 +25,10 @@ while true ; do
 	echo "5 - Finalizar"
 
 	echo ""
-	
+
 	read -p "¿Qué elijes? " eleccion
-	
-	echo ""
-	
-	
+
+
 	
 	case $eleccion in
 	
@@ -37,17 +37,17 @@ while true ; do
 			read -p "Necesito que me digas su DNI: " dni
 			echo ""
 			
-			if grep ^$dni $fichero >/dev/null; then
+			if grep "^$dni" $fichero >/dev/null; then
 				echo "Esa persona ya está dada de alta"
 							
-				else
-					read -p "Ahora necesito que me digas su nombre: " nombre
-					read -p "Ahora sus apellidos (no te preocupes, tolero el espacio en blanco entre apellidos): " apellidos
-					read -p "Por último su localidad: " localidad
+			else
+				read -p "Ahora necesito que me digas su nombre: " nombre
+				read -p "Ahora sus apellidos (no te preocupes, tolero el espacio en blanco entre apellidos): " apellidos
+				read -p "Por último su localidad: " localidad
 					
-					echo $dni:$nombre:$apellidos:$localidad >> $fichero
+				echo $dni:$nombre:$apellidos:$localidad >> $fichero
 					
-					echo "Acabo de meter en tu agenda $dni:$nombre:$apellidos:$localidad"			
+				echo "Acabo de meter en tu agenda $dni:$nombre:$apellidos:$localidad"			
 			fi
 			
 			echo ""
@@ -58,15 +58,15 @@ while true ; do
 			echo "Buscar, vale"
 			read -p "Necesito que me digas su DNI: " dni
 			echo ""
-			if grep ^$dni $fichero >/dev/null; then
-				nombre=$(grep ^$dni agenda.txt | cut -d ":" -f 2)
-				apellidos=$(grep ^$dni agenda.txt | cut -d ":" -f 3)
-				localidad=$(grep ^$dni agenda.txt | cut -d ":" -f 4)
+			if grep "^$dni:" agenda.txt >/dev/null &&  [ $dni ]; then
+				nombre=$(grep "^$dni" $fichero | cut -d ":" -f 2)
+				apellidos=$(grep "^$dni" $fichero | cut -d ":" -f 3)
+				localidad=$(grep "^$dni" $fichero | cut -d ":" -f 4)
 							
 				echo "La persona con DNI número $dni es: $nombre $apellidos, y vive en $localidad"
 				
-				else					
-					echo "Lo siento, te habras equivocado al ponerme el DNI o habrá habido un malentendido pero no tengo registrado a nadie con el DNI $dni"
+			else					
+				echo "Lo siento, te habras equivocado al ponerme el DNI o habrá habido un malentendido pero no tengo registrado a nadie con el DNI $dni"
 			fi
 			echo ""
 			;;
@@ -81,8 +81,8 @@ while true ; do
 				echo ""
 				cat $fichero
 				
-				else
-					echo "Agenda vacía"
+			else
+				echo "Agenda vacía"
 			fi
 			
 			echo ""
@@ -93,7 +93,7 @@ while true ; do
 			echo "¡Borrarlo todo! Si es lo que quieres..."
 			echo ""
 			
-			echo "" > $fichero
+			cat /dev/null  > $fichero
 			
 			echo "Ya está"
 			echo ""

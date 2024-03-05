@@ -45,6 +45,8 @@ for i in listatotal:
     elif os.path.isdir(r):
         directorios.append(r)
 
+fichero.close
+
 
 
 #Zona de definción de opcion:
